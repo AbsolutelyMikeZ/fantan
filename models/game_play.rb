@@ -28,7 +28,13 @@ class GamePlay
     @player_turn = @all_players[0]
   end
 
-  def set_first_player(player_index)
+  def set_first_player
+    # find player with 7 of Diamonds to go first - feel like this could be refactored
+    has_7d = []
+    @all_players.each{ |x|
+      has_7d.push(x.hand.index { |y| y.suit == 'd' && y.number == 7 })  
+    }
+    player_index = has_7d.index { |x| !x.nil? }
     @all_players.rotate!(player_index)
     @player_turn = @all_players[0]
   end

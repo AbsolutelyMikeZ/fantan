@@ -141,13 +141,8 @@ loop do
   $spades = []
 
   # find player with 7 of Diamonds to go first
-  has_7d = []
-  players.each{ |x|
-    has_7d.push(x.hand.index { |y| y.suit == 'd' && y.number == 7 })  
-  }
-  player_index = has_7d.index { |x| !x.nil? }
-  current_game.set_first_player(player_index)
-  #print players[player_turn].name
+  current_game.set_first_player
+
   print current_game.player_turn.name
   puts " is first to go!"
 

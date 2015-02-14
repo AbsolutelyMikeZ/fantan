@@ -1,6 +1,6 @@
 def deal_hand(players, deck)
   # clear old hand array for all players
-  players.each { |x| clear_hand(x) }
+  players.each { |x| x.hand = [] }
   
   # shuffle deck
   deck.shuffle!
@@ -8,7 +8,7 @@ def deal_hand(players, deck)
   # loop through deck, loop through players, adding card to hand array
   i = 0
   deck.each{ |x| 
-    add_card_to_hand(players[i], x)
+    players[i].hand <<  x
     if players.length - i == 1
       i = 0
     else

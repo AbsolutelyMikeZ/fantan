@@ -23,9 +23,6 @@ players.push(Player.new("Albert(c)"))
 players.push(Player.new("Mark(c)"))
 players.push(Player.new("David(c)"))
 
-# define method to deal the cards
-
-
 def is_valid_play(card)
   if card.is_a? Array
     card = card[0]
@@ -87,7 +84,7 @@ end
 
 def pay_or_play(player, pot)
   puts "It is #{player.name}'s turn to play"
-  display_hand(player)
+  player.display_hand
   puts ""
   puts "Type 'pay' or your card to play (i.e. '7d')"
   action = gets.chomp
@@ -186,4 +183,4 @@ loop do
 end
 
 puts "Final Results of #{$hands_played} hands played:"
-players.each{ |x| puts display_name_points(x)}
+players.each{ |x| puts x.display_name_points}

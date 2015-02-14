@@ -7,14 +7,7 @@ class Player
     @hand = []
   end
   
-  def clear_hand
-    @hand = []
-  end
-  
-  public
-  def add_card_to_hand(card)
-    @hand << card
-  end
+
   
   
 end

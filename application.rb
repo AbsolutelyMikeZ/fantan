@@ -29,7 +29,7 @@ def deal_hand(players, deck)
   deck = deck
   
   # clear old hand array for all players
-  players.each { |x| x.clear_hand }
+  players.each { |x| clear_hand(x) }
   
   # shuffle deck
   deck.shuffle!
@@ -38,7 +38,7 @@ def deal_hand(players, deck)
   num_players = players.length
   i = 0
   deck.each{ |x| 
-    players[i].add_card_to_hand(x)
+    add_card_to_hand(players[i], x)
     if num_players - i == 1
       i = 0
     else

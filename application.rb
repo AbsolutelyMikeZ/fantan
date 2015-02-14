@@ -1,5 +1,6 @@
 Dir["#{File.dirname(__FILE__)}/models/*.rb"].each { |f| require f}
 Dir["#{File.dirname(__FILE__)}/views/*.rb"].each { |f| require f}
+Dir["#{File.dirname(__FILE__)}/controllers/*.rb"].each { |f| require f}
 
 # Create the cards and deck
 alow = ["A", 2, 3, 4, 5, 6, 7, 8, 9, 10, "J", "Q", "K"]
@@ -105,14 +106,15 @@ def is_valid_play(card)
   end
 end
 
-def pay_or_play(player)
+def pay_or_play(player, pot)
   puts "It is #{player.name}'s turn to play"
   player.display_hand
   puts ""
   puts "Type 'pay' or your card to play (i.e. '7d')"
   action = gets.chomp
   if action == 'pay'
-    pay_the_pot(player)
+    pay_pot(pot, player, 1)
+    puts "#{player.name} paid the pot 1 point!"
     selected_card = ['paid']
     return selected_card
   else
@@ -129,12 +131,6 @@ def pay_or_play(player)
     end
     return selected_card
   end
-end
-
-def pay_the_pot(player)
-  $pot += 1
-  player.points -= 1
-  puts "#{player.name} paid the pot!"
 end
 
 def play_card(card)
@@ -160,9 +156,9 @@ end
 $hands_played = 0
 
 loop do
-  # initialize the hand by dealing and resetting the pot and board
+  # initialize the hand by dealing and creating a new pot and board
   deal_hand(players, deck)
-  $pot = 0
+  current_pot = Pot.new($hands_played)
   $clubs = []
   $diamonds = []
   $hearts = []
@@ -179,7 +175,7 @@ loop do
 
   loop do
     loop do
-      choice = pay_or_play(players[player_turn])
+      choice = pay_or_play(players[player_turn], current_pot)
       if choice[0] == 'paid'
         turn_complete = true
       else
@@ -202,8 +198,8 @@ loop do
       player_turn += 1
     end
   end
-  puts "#{players[player_turn].name} won the pot of #{$pot} points"
-  players[player_turn].points += $pot
+  puts "#{players[player_turn].name} won the pot of #{current_pot.points} points"
+  win_pot(current_pot, players[player_turn])
   $hands_played += 1
   puts "Play another hand? ('Y' to play again)"
   play_again = gets.chomp

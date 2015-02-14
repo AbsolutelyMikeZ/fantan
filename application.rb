@@ -1,4 +1,5 @@
 Dir["#{File.dirname(__FILE__)}/models/*.rb"].each { |f| require f}
+Dir["#{File.dirname(__FILE__)}/views/*.rb"].each { |f| require f}
 
 # Create the cards and deck
 alow = ["A", 2, 3, 4, 5, 6, 7, 8, 9, 10, "J", "Q", "K"]

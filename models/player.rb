@@ -26,6 +26,6 @@ class Player
   
   def display_hand
     @hand.sort_by! { |a| [a.suit, a.value] }
-    @hand.each { |x| print x.display_card + " "}
+    @hand.each { |x| print display_card(x) + " "}
   end
 end

@@ -1,25 +1,4 @@
-class Card
-  attr_accessor :number, :suit, :value
-  
-  def initialize(number, suit, value)
-    @number = number
-    @suit = suit
-    @value = value
-  end
-  
-  def display_card_rank
-    "#{@number}#{@suit} rank:#{@value}"
-  end
-  
-  def display_card
-    "#{@number}#{@suit}"
-  end
-  
-  public
-  def card_value
-    return @value
-  end
-end
+Dir["#{File.dirname(__FILE__)}/models/*.rb"].each { |f| require f}
 
 # Create the cards and deck
 alow = ["A", 2, 3, 4, 5, 6, 7, 8, 9, 10, "J", "Q", "K"]
@@ -33,38 +12,6 @@ suit.each { |s|
     i += 1
     }
   }
-
-class Player
-  attr_accessor :name, :points, :hand
-  
-  def initialize(name)
-    @name = name
-    @points = 0
-    @hand = []
-  end
-  
-  def pay_pot
-    @points -= 1
-  end
-  
-  def clear_hand
-    @hand = []
-  end
-  
-  public
-  def add_card_to_hand(card)
-    @hand << card
-  end
-  
-  def display_player
-    "#{@name}: #{@points} points"
-  end
-  
-  def display_hand
-    @hand.sort_by! { |a| [a.suit, a.value] }
-    @hand.each { |x| print x.display_card + " "}
-  end
-end
 
 # Create the players for the game
 players = []

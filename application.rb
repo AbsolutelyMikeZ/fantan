@@ -82,21 +82,21 @@ def is_valid_play(card)
   end
 end
 
-def pay_or_play(player, pot)
-  puts "It is #{player.name}'s turn to play"
-  player.display_hand
+def pay_or_play(current_game)
+  puts "It is #{current_game.player_turn.name}'s turn to play"
+  current_game.player_turn.display_hand
   puts ""
   puts "Type 'pay' or your card to play (i.e. '7d')"
   action = gets.chomp
   if action == 'pay'
-    pay_pot(pot, player, 1)
-    puts "#{player.name} paid the pot 1 point!"
+    current_game.pay_pot(current_game.player_turn, 1)
+    puts "#{current_game.player_turn.name} paid the pot 1 point!"
     selected_card = ['paid']
     return selected_card
   else
     selected_card = []
     while selected_card.empty?
-      selected_card = player.hand.select{ |x| x.number.to_s + x.suit.to_s == action.to_s}
+      selected_card = current_game.player_turn.hand.select{ |x| x.number.to_s + x.suit.to_s == action.to_s}
       if selected_card.empty?
         puts "Card not in your hand - try selection again"
         action = gets.chomp
@@ -129,12 +129,12 @@ def play_card(card)
 end
 
 
-$hands_played = 0
+hand_number = 1
 
 loop do
   # initialize the hand by dealing and creating a new pot and board
   deal_hand(players, deck)
-  current_pot = Pot.new($hands_played)
+  current_game = GamePlay.new(players, hand_number)
   $clubs = []
   $diamonds = []
   $hearts = []
@@ -145,19 +145,21 @@ loop do
   players.each{ |x|
     has_7d.push(x.hand.index { |y| y.suit == 'd' && y.number == 7 })  
   }
-  player_turn = has_7d.index { |x| !x.nil? }
-  print players[player_turn].name
+  player_index = has_7d.index { |x| !x.nil? }
+  current_game.set_first_player(player_index)
+  #print players[player_turn].name
+  print current_game.player_turn.name
   puts " is first to go!"
 
   loop do
     loop do
-      choice = pay_or_play(players[player_turn], current_pot)
+      choice = pay_or_play(current_game)
       if choice[0] == 'paid'
         turn_complete = true
       else
         if is_valid_play(choice)
           play_card(choice)
-          players[player_turn].hand.delete(choice[0])
+          current_game.player_turn.hand.delete(choice[0])
           turn_complete = true
         else
           puts "That card can't be played now, silly!"
@@ -167,20 +169,16 @@ loop do
       break if turn_complete == true
     end
   
-    break if players[player_turn].hand.empty?
-    if player_turn == (players.length - 1)
-      player_turn = 0
-    else
-      player_turn += 1
-    end
+    break if current_game.player_turn.hand.empty?
+    current_game.next_player
   end
-  puts "#{players[player_turn].name} won the pot of #{current_pot.points} points"
-  win_pot(current_pot, players[player_turn])
-  $hands_played += 1
+  puts "#{current_game.player_turn.name} won the pot of #{current_game.pot} points"
+  win_pot(current_game.player_turn)
+  hand_number += 1
   puts "Play another hand? ('Y' to play again)"
   play_again = gets.chomp
   break if play_again != 'Y'
 end
 
-puts "Final Results of #{$hands_played} hands played:"
+puts "Final Results of #{hand_number - 1} hands played:"
 players.each{ |x| puts x.display_name_points}

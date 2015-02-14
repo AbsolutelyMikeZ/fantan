@@ -108,7 +108,7 @@ end
 
 def pay_or_play(player, pot)
   puts "It is #{player.name}'s turn to play"
-  player.display_hand
+  display_hand(player)
   puts ""
   puts "Type 'pay' or your card to play (i.e. '7d')"
   action = gets.chomp
@@ -207,4 +207,4 @@ loop do
 end
 
 puts "Final Results of #{$hands_played} hands played:"
-players.each{ |x| puts "#{x.name}: #{x.points}"}
+players.each{ |x| puts display_name_points(x)}

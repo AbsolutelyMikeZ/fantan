@@ -7,10 +7,6 @@ class Player
     @hand = []
   end
   
-  def pay_pot
-    @points -= 1
-  end
-  
   def clear_hand
     @hand = []
   end
@@ -20,12 +16,5 @@ class Player
     @hand << card
   end
   
-  def display_player
-    "#{@name}: #{@points} points"
-  end
   
-  def display_hand
-    @hand.sort_by! { |a| [a.suit, a.value] }
-    @hand.each { |x| print display_card(x) + " "}
-  end
 end

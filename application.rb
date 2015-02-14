@@ -24,28 +24,7 @@ players.push(Player.new("Mark(c)"))
 players.push(Player.new("David(c)"))
 
 # define method to deal the cards
-def deal_hand(players, deck)
-  players = players
-  deck = deck
-  
-  # clear old hand array for all players
-  players.each { |x| clear_hand(x) }
-  
-  # shuffle deck
-  deck.shuffle!
-  
-  # loop through deck, loop through players, adding card to hand array
-  num_players = players.length
-  i = 0
-  deck.each{ |x| 
-    add_card_to_hand(players[i], x)
-    if num_players - i == 1
-      i = 0
-    else
-      i += 1
-    end
-  }
-end
+
 
 def is_valid_play(card)
   if card.is_a? Array

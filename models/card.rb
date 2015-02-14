@@ -6,4 +6,9 @@ class Card
     @suit = suit
     @value = value
   end
+  
+  def display_card
+  "#{@number}#{@suit}"
+end
+
 end

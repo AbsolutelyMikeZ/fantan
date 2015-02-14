@@ -13,6 +13,6 @@ class Player
   
   def display_hand #relies on card.rb - is this bad practice?
     @hand.sort_by! { |a| [a.suit, a.value] }
-    @hand.each { |x| print display_card(x) + " "}
+    @hand.each { |x| print x.display_card + " "}
   end
 end

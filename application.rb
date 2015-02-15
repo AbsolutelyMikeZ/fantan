@@ -23,64 +23,6 @@ players.push(Player.new("Albert(c)"))
 players.push(Player.new("Mark(c)"))
 players.push(Player.new("David(c)"))
 
-def is_valid_play(card)
-  if card.is_a? Array
-    card = card[0]
-  end
-  
-  if $diamonds.empty?
-    if card.suit == 'd' && card.number == 7
-      return true
-    else
-      return false
-    end
-  end
-  
-  if card.number == 7
-    return true
-  else
-    case card.suit
-    when 'c'
-      if $clubs.empty?
-        return false
-      else
-        if card.value - $clubs.max_by(&:value).value == 1 || $clubs.min_by(&:value).value - card.value == 1
-          return true
-        else
-          return false
-        end
-      end
-    when 'd'
-      if card.value - $diamonds.max_by(&:value).value == 1 || $diamonds.min_by(&:value).value - card.value == 1
-        return true
-      else
-        return false
-      end
-    when 'h'
-      if $hearts.empty?
-        return false
-      else
-        if card.value - $hearts.max_by(&:value).value == 1 || $hearts.min_by(&:value).value - card.value == 1
-          return true
-        else
-          return false
-        end
-      end
-    when 's'
-      if $spades.empty?
-        return false
-      else
-        if card.value - $spades.max_by(&:value).value == 1 || $spades.min_by(&:value).value - card.value == 1
-          return true
-        else
-          return false
-        end
-      end
-    else
-        return false
-    end
-  end
-end
 
 def pay_or_play(current_game)
   puts "It is #{current_game.player_turn.name}'s turn to play"
@@ -109,36 +51,12 @@ def pay_or_play(current_game)
   end
 end
 
-def play_card(card)
-  if card.is_a? Array
-    card = card[0]
-  end
-  
-  case card.suit
-  when 'd'
-    $diamonds << card
-  when 'c'
-    $clubs << card
-  when 'h'
-    $hearts << card
-  when 's'
-    $spades << card
-  else
-    return false
-  end
-end
-
-
 hand_number = 1
 
 loop do
   # initialize the hand by dealing and creating a new pot and board
   deal_hand(players, deck)
   current_game = GamePlay.new(players, hand_number)
-  $clubs = []
-  $diamonds = []
-  $hearts = []
-  $spades = []
 
   # find player with 7 of Diamonds to go first
   current_game.set_first_player
@@ -152,8 +70,8 @@ loop do
       if choice[0] == 'paid'
         turn_complete = true
       else
-        if is_valid_play(choice)
-          play_card(choice)
+        if current_game.is_valid_play(choice)
+          current_game.play_card(choice)
           current_game.player_turn.hand.delete(choice[0])
           turn_complete = true
         else

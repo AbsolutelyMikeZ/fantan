@@ -80,18 +80,33 @@ loop do
 
   loop do
     loop do
-      choice = pay_or_play(current_game)
-      if choice[0] == 'paid'
-        turn_complete = true
-      else
-        if current_game.is_valid_play(choice)
-          current_game.play_card(choice)
-          current_game.player_turn.hand.delete(choice[0])
+      if current_game.player_turn.human
+        choice = pay_or_play(current_game)
+        if choice[0] == 'paid'
           turn_complete = true
         else
-          puts "That card can't be played now, silly!"
+          if current_game.is_valid_play(choice)
+            current_game.play_card(choice)
+            current_game.player_turn.hand.delete(choice[0])
+            turn_complete = true
+          else
+            puts "That card can't be played now, silly!"
+          end
         end
-      end  
+      else #if Bot logic block
+        valid_cards = valid_plays(current_game.player_turn, current_game)
+        if valid_cards.empty?
+          current_game.pay_pot(current_game.player_turn, 1)
+          puts "#{current_game.player_turn.name} paid the pot 1 point!"
+          turn_complete = true
+        else
+          choice = valid_cards.sample
+          current_game.play_card(choice)
+          current_game.player_turn.hand.delete(choice)
+          puts "#{current_game.player_turn.name} played the #{choice.number}#{choice.suit}"
+          turn_complete = true
+        end
+      end      
     
       break if turn_complete == true
     end
@@ -100,7 +115,7 @@ loop do
     current_game.next_player
   end
   puts "#{current_game.player_turn.name} won the pot of #{current_game.pot} points"
-  win_pot(current_game.player_turn)
+  current_game.win_pot(current_game.player_turn)
   hand_number += 1
   puts "Play another hand? ('Y' to play again)"
   play_again = gets.chomp

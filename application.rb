@@ -26,12 +26,10 @@ players.push(Player.new("David(c)"))
 
 def pay_or_play(current_game)
   puts "It is #{current_game.player_turn.name}'s turn to play"
-  current_game.player_turn.display_hand
-  puts ""
-  print "Valid Plays: "
+  display_cards(current_game.player_turn.hand)
   valid_cards = valid_plays(current_game.player_turn, current_game)
-  valid_cards.each{ |x| print x.display_card + " "}
-  puts ""
+  print valid_cards.empty? ? "You must pay" : "Valid Plays: "
+  display_cards(valid_cards)
   puts "Type 'pay' or your card to play (i.e. '7d')"
   action = gets.chomp
   if action == 'pay'

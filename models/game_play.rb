@@ -45,64 +45,24 @@ class GamePlay
   end
   
   def is_valid_play(card)
-  if card.is_a? Array
-    card = card[0]
-  end
-  
-  if @board.count { |x| x.suit == 'd'} == 0
-    if card.suit == 'd' && card.number == 7
-      return true
-    else
-      return false
+    if card.is_a? Array
+      card = card[0]
     end
-  end
   
-  if card.number == 7
-    return true
-  else
-    case card.suit
-    when 'c'
-      if @board.count { |x| x.suit == 'c'} == 0
-        return false
-      else
-        if card.value - @board.select{ |x| x.suit == 'c'}.max_by(&:value).value == 1 || @board.select{ |x| x.suit == 'c'}.min_by(&:value).value - card.value == 1
-          return true
-        else
-          return false
-        end
-      end
-    when 'd'
-      if card.value - @board.select{ |x| x.suit == 'd'}.max_by(&:value).value == 1 || @board.select{ |x| x.suit == 'd'}.min_by(&:value).value - card.value == 1
+    if @board.empty?
+      return card.suit == 'd' && card.number == 7
+    else
+      if card.number == 7
         return true
       else
-        return false
-      end
-    when 'h'
-      if @board.count { |x| x.suit == 'h'} == 0
-        return false
-      else
-        if card.value - @board.select{ |x| x.suit == 'h'}.max_by(&:value).value == 1 || @board.select{ |x| x.suit == 'h'}.min_by(&:value).value - card.value == 1
-          return true
-        else
+        if @board.count { |x| x.suit == card.suit} == 0
           return false
+        else
+          return card.value - @board.select{ |x| x.suit == card.suit}.max_by(&:value).value == 1 || @board.select{ |x| x.suit == card.suit}.min_by(&:value).value - card.value == 1
         end
       end
-    when 's'
-      if @board.count { |x| x.suit == 's'} == 0
-        return false
-      else
-        if card.value - @board.select{ |x| x.suit == 's'}.max_by(&:value).value == 1 || @board.select{ |x| x.suit == 's'}.min_by(&:value).value - card.value == 1
-          return true
-        else
-          return false
-        end
-      end
-    else
-        return false
     end
   end
-end
   
-  
-  
+
 end

@@ -40,7 +40,6 @@ class GamePlay
     if card.is_a? Array
       card = card[0]
     end
-    
     @board << card
   end
   
@@ -63,6 +62,4 @@ class GamePlay
       end
     end
   end
-  
-
 end

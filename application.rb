@@ -17,11 +17,23 @@ suit.each { |s|
 
 # Create the players for the game
 players = []
-players.push(Player.new("Michael"))
-players.push(Player.new("Regina(c)"))
-players.push(Player.new("Albert(c)"))
-players.push(Player.new("Mark(c)"))
-players.push(Player.new("David(c)"))
+puts "Enter your name:"
+human_name = gets.chomp
+players.push(Player.new(human_name, true))
+
+5.times { |x| 
+  bot_name = "Bot#{x+1}"
+  players.push(Player.new(bot_name, false))
+  }
+
+# hide this to speed up for testing
+# puts "How many computer players?"
+# computer_bots = gets.chomp.to_i
+# computer_bots.times { |x|
+#   puts"Bot ##{x + 1} name: "
+#   bot_name = gets.chomp
+#   players.push(Player.new(bot_name, false))
+# }
 
 
 def pay_or_play(current_game)

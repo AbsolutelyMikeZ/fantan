@@ -21,7 +21,7 @@ puts "Enter your name:"
 human_name = gets.chomp
 players.push(Player.new(human_name, true))
 
-5.times { |x| 
+3.times { |x| 
   bot_name = "Bot#{x+1}"
   players.push(Player.new(bot_name, false))
   }

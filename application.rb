@@ -93,13 +93,23 @@ loop do
             puts "That card can't be played now, silly!"
           end
         end
-      else #if Bot logic block
+      else  # if Bot player, use this logic block
         valid_cards = valid_plays(current_game.player_turn, current_game)
-        if valid_cards.empty?
+        print "#{current_game.player_turn.name} Valid Plays: "
+        display_cards(valid_cards)
+        if valid_cards.empty?  # must pay pot
           current_game.pay_pot(current_game.player_turn, 1)
           puts "#{current_game.player_turn.name} paid the pot 1 point!"
           turn_complete = true
-        else
+        elsif valid_cards.length == 1  # must play only valid card
+          choice = valid_cards[0]
+          current_game.play_card(choice)
+          current_game.player_turn.hand.delete(choice)
+          puts "#{current_game.player_turn.name} played the #{choice.number}#{choice.suit}"
+          turn_complete = true
+        else  # use AI logic to determine which card to play
+          
+          
           choice = valid_cards.sample
           current_game.play_card(choice)
           current_game.player_turn.hand.delete(choice)

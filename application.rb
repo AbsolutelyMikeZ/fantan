@@ -95,7 +95,9 @@ loop do
         end
       else  # if Bot player, use this logic block
         valid_cards = valid_plays(current_game.player_turn, current_game)
-        print "#{current_game.player_turn.name} Valid Plays: "
+        print "#{current_game.player_turn.name} hand: "
+        display_cards(current_game.player_turn.hand)
+        print "Valid plays: "
         display_cards(valid_cards)
         if valid_cards.empty?  # must pay pot
           current_game.pay_pot(current_game.player_turn, 1)
@@ -109,8 +111,8 @@ loop do
           turn_complete = true
         else  # use AI logic to determine which card to play
           
-          
-          choice = valid_cards.sample
+          choice = bot_ai_v1(current_game.player_turn.hand, valid_cards)
+          # choice = bot_ai_random(valid_cards)
           current_game.play_card(choice)
           current_game.player_turn.hand.delete(choice)
           puts "#{current_game.player_turn.name} played the #{choice.number}#{choice.suit}"

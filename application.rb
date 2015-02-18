@@ -19,9 +19,9 @@ suit.each { |s|
 players = []
 puts "Enter your name:"
 human_name = gets.chomp
-players.push(Player.new(human_name, true))
+#players.push(Player.new(human_name, true))  temp commenting to run test version with only bots
 
-3.times { |x| 
+4.times { |x| 
   bot_name = "Bot#{x+1}"
   players.push(Player.new(bot_name, false))
   }
@@ -66,8 +66,8 @@ def pay_or_play(current_game)
 end
 
 hand_number = 1
-
-loop do
+10000.times do
+# loop do  <--comment out for AI testing
   # initialize the hand by dealing and creating a new pot and board
   deal_hand(players, deck)
   current_game = GamePlay.new(players, hand_number)
@@ -110,9 +110,20 @@ loop do
           puts "#{current_game.player_turn.name} played the #{choice.number}#{choice.suit}"
           turn_complete = true
         else  # use AI logic to determine which card to play
-          
-          choice = bot_ai_v2(current_game.player_turn.hand, valid_cards)
-          # choice = bot_ai_random(valid_cards)
+          case current_game.player_turn.name
+          when 'Bot1'
+            # choice = bot_ai_random(valid_cards)
+            choice = bot_ai_v1(current_game.player_turn.hand, valid_cards)
+          when 'Bot2'
+            # choice = bot_ai_random(valid_cards)
+            choice = bot_ai_v1(current_game.player_turn.hand, valid_cards)
+          when 'Bot3'
+            choice = bot_ai_v2(current_game.player_turn.hand, valid_cards)
+          when 'Bot4'    
+            choice = bot_ai_v2(current_game.player_turn.hand, valid_cards)
+          else
+            choice = bot_ai_random(valid_cards)
+          end
           current_game.play_card(choice)
           current_game.player_turn.hand.delete(choice)
           puts "#{current_game.player_turn.name} played the #{choice.number}#{choice.suit}"
@@ -129,10 +140,10 @@ loop do
   puts "#{current_game.player_turn.name} won the pot of #{current_game.pot} points"
   current_game.win_pot(current_game.player_turn)
   hand_number += 1
-  puts "Play another hand? ('Y' to play again)"
-  play_again = gets.chomp
-  break if play_again != 'Y'
+  # comment next 3 lines to run in AI test mode
+  #puts "Play another hand? ('Y' to play again)"
+  #play_again = gets.chomp
+  #break if play_again != 'Y'
 end
-
 puts "Final Results of #{hand_number - 1} hands played:"
 players.each{ |x| puts x.display_name_points}

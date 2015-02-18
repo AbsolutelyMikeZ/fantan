@@ -71,7 +71,7 @@ def bot_ai_v2(hand, valid)
     else
       score = 30
     end
-    puts "#{x.number}#{x.suit} Score: #{score}"    
+    # puts "#{x.number}#{x.suit} Score: #{score}"    
     ai_ranking.push(Ai_score.new(x, score))
   }
   

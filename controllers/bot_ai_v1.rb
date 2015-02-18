@@ -24,11 +24,10 @@ def bot_ai_v1(hand, valid)
     else
       score = 30
     end
-        
+    # puts "#{x.number}#{x.suit} Score: #{score}"    
     ai_ranking.push(Ai_score.new(x, score))
   }
   
   ai_ranking.sort_by! { |x| [x.score] }
-  puts "Score: #{ai_ranking[0].score}"
   return ai_ranking[0].card
 end

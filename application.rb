@@ -111,7 +111,7 @@ loop do
           turn_complete = true
         else  # use AI logic to determine which card to play
           
-          choice = bot_ai_v1(current_game.player_turn.hand, valid_cards)
+          choice = bot_ai_v2(current_game.player_turn.hand, valid_cards)
           # choice = bot_ai_random(valid_cards)
           current_game.play_card(choice)
           current_game.player_turn.hand.delete(choice)

@@ -1,3 +1,5 @@
+# AI version 1 determines simply if the card is a stopper or not and if a stopper, assigns a score based on distance from 7
+
 def bot_ai_v1(hand, valid)
   ai_ranking = []
   valid.each { |x|

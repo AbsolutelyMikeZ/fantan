@@ -62,4 +62,16 @@ class GamePlay
       end
     end
   end
+  
+  def show_board
+    suits = { Clubs: "c", Diamonds: "d", Hearts: "h", Spades: "s" }
+    suits.each_pair { |suit, abbr|
+      print "#{suit}: "
+      @board.select { |x| x.suit == abbr}
+           .sort_by { |x| [x.value] }
+           .each { |x| print "#{x.number} "}
+      puts ""
+    }
+    
+  end
 end

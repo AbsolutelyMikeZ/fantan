@@ -19,9 +19,9 @@ suit.each { |s|
 players = []
 puts "Enter your name:"
 human_name = gets.chomp
-#players.push(Player.new(human_name, true))  temp commenting to run test version with only bots
+players.push(Player.new(human_name, true))  #temp commenting to run test version with only bots
 
-4.times { |x| 
+3.times { |x| 
   bot_name = "Bot#{x+1}"
   players.push(Player.new(bot_name, false))
   }
@@ -66,8 +66,9 @@ def pay_or_play(current_game)
 end
 
 hand_number = 1
-10000.times do
-# loop do  <--comment out for AI testing
+start_time = Time.now
+# 100_000.times do
+loop do  # <--comment out for AI testing
   # initialize the hand by dealing and creating a new pot and board
   deal_hand(players, deck)
   current_game = GamePlay.new(players, hand_number)
@@ -81,6 +82,7 @@ hand_number = 1
   loop do
     loop do
       if current_game.player_turn.human
+        current_game.show_board
         choice = pay_or_play(current_game)
         if choice[0] == 'paid'
           turn_complete = true
@@ -95,10 +97,10 @@ hand_number = 1
         end
       else  # if Bot player, use this logic block
         valid_cards = valid_plays(current_game.player_turn, current_game)
-        print "#{current_game.player_turn.name} hand: "
-        display_cards(current_game.player_turn.hand)
-        print "Valid plays: "
-        display_cards(valid_cards)
+        #print "#{current_game.player_turn.name} hand: "
+        #display_cards(current_game.player_turn.hand)
+        #print "Valid plays: "
+        #display_cards(valid_cards)
         if valid_cards.empty?  # must pay pot
           current_game.pay_pot(current_game.player_turn, 1)
           puts "#{current_game.player_turn.name} paid the pot 1 point!"
@@ -113,10 +115,10 @@ hand_number = 1
           case current_game.player_turn.name
           when 'Bot1'
             # choice = bot_ai_random(valid_cards)
-            choice = bot_ai_v1(current_game.player_turn.hand, valid_cards)
+            choice = bot_ai_v3(current_game.player_turn.hand, valid_cards)
           when 'Bot2'
             # choice = bot_ai_random(valid_cards)
-            choice = bot_ai_v1(current_game.player_turn.hand, valid_cards)
+            choice = bot_ai_v3(current_game.player_turn.hand, valid_cards)
           when 'Bot3'
             choice = bot_ai_v2(current_game.player_turn.hand, valid_cards)
           when 'Bot4'    
@@ -141,9 +143,11 @@ hand_number = 1
   current_game.win_pot(current_game.player_turn)
   hand_number += 1
   # comment next 3 lines to run in AI test mode
-  #puts "Play another hand? ('Y' to play again)"
-  #play_again = gets.chomp
-  #break if play_again != 'Y'
+  puts "Play another hand? ('Y' to play again)"
+  play_again = gets.chomp
+  break if play_again != 'Y'
 end
 puts "Final Results of #{hand_number - 1} hands played:"
 players.each{ |x| puts x.display_name_points}
+run_time = Time.now - start_time
+puts "Test runtime = #{run_time} seconds"

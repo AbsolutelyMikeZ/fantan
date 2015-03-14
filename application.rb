@@ -1,5 +1,4 @@
 Dir["#{File.dirname(__FILE__)}/models/*.rb"].each { |f| require f}
-Dir["#{File.dirname(__FILE__)}/views/*.rb"].each { |f| require f}
 Dir["#{File.dirname(__FILE__)}/controllers/*.rb"].each { |f| require f}
 
 # Create the cards and deck
@@ -19,7 +18,7 @@ suit.each { |s|
 players = []
 puts "Enter your name:"
 human_name = gets.chomp
-players.push(Player.new(human_name, true))  #temp commenting to run test version with only bots
+players.push(Player.new(human_name, true))
 
 3.times { |x| 
   bot_name = "Bot#{x+1}"
